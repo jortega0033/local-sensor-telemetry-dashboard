@@ -32,8 +32,8 @@ jobs:
 
   go:
     # TEMPORARY GUARD: every Go step below runs only when go.mod exists, so this
-    # workflow is green on the planning-only repository. Ticket #2 (walking
-    # skeleton) adds go.mod and removes the `hashFiles('go.mod') != ''` guards
+    # workflow is green on the planning-only repository. The first sub-issue of
+    # ticket #2 (walking skeleton) adds go.mod and removes the `hashFiles('go.mod') != ''` guards
     # (acceptance criterion 1: "the CI workflow no longer skips Go checks").
     # Go is not installed on the owner's PC; this job is where Go is verified.
     name: go (${{ matrix.os }})
