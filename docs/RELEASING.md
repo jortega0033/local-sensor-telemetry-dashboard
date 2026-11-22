@@ -8,7 +8,7 @@ A release is a Git tag on a commit of `main`, `vMAJOR.MINOR.PATCH`. Nothing is p
 
 ## Checks before tagging
 
-1. CI is green on the tip of `main` for both jobs (`test` and `go`) on Linux and Windows, with the Go checks not skipped (the guard on `go.mod` is gone after ticket #2).
+1. CI is green on the tip of `main` for both jobs (`test` and `go`) on Linux and Windows. On Linux every Go step runs and none is skipped (the guard on `go.mod` is gone after ticket #2); on Windows `go test` is skipped by design in `ci.yml` and the build and vet steps run.
 2. `gofmt -l .` prints nothing, and `go vet ./...`, `go build ./...` and `go test ./...` pass in that CI run, with `GOPROXY=off`.
 3. `go.mod` has no `require` line and there is no `go.sum`.
 4. The offline demo steps in the README were run by the owner in Chrome against the built binary.
