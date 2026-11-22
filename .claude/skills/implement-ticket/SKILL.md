@@ -17,11 +17,11 @@ The project subagents in `.claude/agents/` are part of the work. Delegate to the
 3. **Orient and check the approach.** Delegate as the table "Before coding" says. Settle open design questions before writing code.
 4. **Branch** as the Git workflow in `CLAUDE.md` says. Never work on the default branch.
 5. **Implement** inside the ticket's stated scope. Delegate the work to the implementing role that matches the files being changed (table "While coding"). Do not widen scope; note anything else you find as a follow-up.
-6. **Test.** Add or change tests for every acceptance criterion and material edge case, then run the checks listed in `CLAUDE.md`. Record each command and its result.
+6. **Test.** Add or change tests for every acceptance criterion and material edge case, then run the checks listed in `CLAUDE.md` that can run here. Go is not installed on this PC and runs in CI only: write the tests with the code, record plainly that nothing was run locally, and let the CI run on the draft pull request be the evidence.
 7. **Specialist review.** Run every role in the table "After coding" whose trigger matches the change.
-8. **Review gate, always.** Run Code Reviewer on the full diff. Fix every material finding, re-run the checks, and have the reviewer look again until no material finding is left.
-9. **Acceptance gate, always.** Run Reality Checker with the ticket's acceptance criteria and the evidence you produced. Do not call the ticket done unless it passes.
-10. **Hand off.** Capture the evidence `CLAUDE.md` asks for and open a draft pull request that names the issue. Do not merge.
+8. **Review gate, always.** Run Code Reviewer on the full diff. Fix every material finding, re-run the local checks, and have the reviewer look again until no material finding is left.
+9. **Acceptance gate, always.** Run Reality Checker with the ticket's acceptance criteria and the evidence you produced. Reality Checker checks that a test exists for each criterion and that CI is configured to run it; it does not need a CI result. Do not call the ticket done unless it passes.
+10. **Hand off.** Capture the evidence `CLAUDE.md` asks for and open a draft pull request that says `Part of epic #1` and `Closes #<ticket>`, wait for CI on it, fix a red run and repeat the gates, and run `gh pr ready` only when CI is green. Do not merge; only the owner merges.
 
 ## Roles
 
