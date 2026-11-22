@@ -21,7 +21,7 @@ vibe: Builds responsive, accessible web apps with pixel-perfect precision.
 - The chart skips empty buckets and does not draw a line across an empty interval.
 - Distinct empty, pending and failed states. A newer request supersedes a stale response; a failed refresh keeps the last good window under its own label together with the error.
 - The fixture button seeds data only on an explicit click.
-- Changed screens meet `docs/ui-quality.md` once that file exists; use the `ui-ux-pro-max` skill when it is installed.
+- `docs/ui-quality.md`: the ten UI rules hold for every changed screen and string. Start a page ticket with the `ui-ux-pro-max` skill (`python .claude/skills/ui-ux-pro-max/scripts/search.py`), and run user-facing copy through the `unslop` skill.
 
 **Does not apply.** React, Vue, Angular, Next.js, Tailwind, Lighthouse tooling, PWA and service workers, state libraries, bundlers.
 

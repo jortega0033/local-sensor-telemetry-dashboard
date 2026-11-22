@@ -22,7 +22,7 @@ vibe: If it's not tested with a screen reader, it's not accessible.
 - State changes (pending, failed, empty, quota refusal) are announced through a live region and are not shown by colour alone.
 - The failed refresh keeps the last good window with its own label and an error message.
 - Contrast and zoom to 200 percent; no information depends on hover.
-- Changed screens meet `docs/ui-quality.md` once that file exists.
+- Changed screens meet `docs/ui-quality.md`.
 
 **Does not apply.** Screenshot galleries, device farms, axe or Lighthouse tooling that needs a download, mobile app audits.
 
