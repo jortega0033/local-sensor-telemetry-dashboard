@@ -19,6 +19,9 @@ An offline time-series workbench for one developer investigating synthetic machi
 | Loop setup and its limits | [LOOP.md](LOOP.md), [loop-constraints.md](loop-constraints.md) |
 | Project subagents, origin and local changes | [.claude/agency-agents/README.md](.claude/agency-agents/README.md) |
 | Ticket workflow and the step at which each role runs | [.claude/skills/implement-ticket/SKILL.md](.claude/skills/implement-ticket/SKILL.md), section "Agent roles" below |
+| How a ticket goes from the queue to a ready pull request, who may do what | "Delivery workflow" below |
+| UI and copy rules | [docs/ui-quality.md](docs/ui-quality.md) |
+| Decisions the owner made, with dates | [docs/owner-decisions.md](docs/owner-decisions.md) |
 
 The PRD and the technical specification repeat the same design sections. When they differ, the technical specification wins for design and the epic and tickets win for scope; a ticket that changes a contract fixes both documents in the same pull request.
 
@@ -70,7 +73,7 @@ Invariants every change must keep (technical specification, "Ingestion, acknowle
 - `main` is the default branch. Work on one branch per ticket: `<issue-number>-<short-slug>`. Never commit to `main`.
 - Small commits with imperative subjects and a type prefix (`feat:`, `fix:`, `docs:`, `test:`, `chore:`).
 - Order for every ticket: local evidence, Code Reviewer, Reality Checker, then a draft pull request that says `Part of epic #1` and `Closes #<ticket>`, then CI on that draft, then `gh pr ready` only when CI is green.
-- Do not push or open a pull request unless the owner asked in the current session. Only the owner merges and releases. Do not push to `main`, force-push, or merge your own pull request.
+- Do not push or open a pull request unless the owner asked in the current session; starting `/next-ticket` is that request for one ticket. Only the owner merges and releases. Do not push to `main`, force-push, or merge your own pull request.
 - Never commit a data directory, `.env*`, or a built `sensordash` binary.
 - Do not change `.claude/agents/`, `LOOP.md`, `loop-constraints.md` or `loop-budget.md` as part of a feature ticket.
 - Open owner decisions on a ticket are settled with the ticket's stated default. Where a ticket states none, take the conservative option and say so in the pull request.
@@ -80,7 +83,7 @@ Invariants every change must keep (technical specification, "Ingestion, acknowle
 Paste real output into the pull request; never summarise a run you did not make.
 
 1. For each acceptance criterion of the issue: the name of the test that proves it, or the exact step and what was observed.
-2. Go results come from CI: the link to the CI run on the draft pull request and the result of `gofmt -l .`, `go vet ./...` and `go test ./...` in it, with the Go version. If Go is available locally, also paste the local output; if it is not, say so. Because there is no local Go run, the gates judge the diff, the tests written for each criterion and that CI runs them; a ticket is not done on a red or missing CI run.
+2. Go results come from CI, and green CI on the current diff is a condition for `gh pr ready`: the link to the CI run on the draft pull request (jobs `test` and `go`, Go steps run and not skipped) and the result of `gofmt -l .`, `go vet ./...` and `go test ./...` in it, with the Go version. If Go is available locally, also paste the local output; if it is not, say so. Because there is no local Go run, the gates judge the diff, the tests written for each criterion and that CI runs them; a ticket is not done on a red or missing CI run.
 3. For an HTTP change: one request and response pair per success and per error status, from a server on a scratch data directory (CI test output counts).
 4. For a durability or recovery change: the fault point exercised, the oracle result (acknowledged rows survive, unacknowledged are absent or fully present, no duplicates), and the filesystem and fault model used.
 5. For a UI change: the Chrome test run, plus the manual steps the ticket marks as owner checks; the page makes no external request.
@@ -108,6 +111,21 @@ When asked to implement, continue or finish a GitHub issue, follow the playbook 
 - The session or role that wrote a change does not count as its reviewer.
 - If a role is missing or cannot be delegated to, the session does the before-coding, while-coding and specialist steps itself and says so. It cannot pass the two gates on its own change: do not push or open the pull request. Stop, report that the gates could not run, and leave the run for the owner. This overrides the playbook's sentence "do that step yourself" for the two gates.
 - In the pull request description, list under "Agent roles run" each role that ran, what it was asked and its verdict, and any step done without a role.
+
+## Delivery workflow
+
+How a ticket reaches the owner. Each piece is described in its own file; this part only links them.
+
+- **Start:** the owner runs `/next-ticket` ([`.claude/skills/next-ticket/SKILL.md`](.claude/skills/next-ticket/SKILL.md)); it picks one leaf ticket (never a `tracking` parent or a ticket with open sub-issues; the last sub-issue's pull request also closes the parent), creates the branch and worktree, and runs the playbook [`.claude/skills/implement-ticket/SKILL.md`](.claude/skills/implement-ticket/SKILL.md). Nothing is scheduled.
+- **Gate hook:** [`.claude/hooks/role_gate.py`](.claude/hooks/role_gate.py) blocks `gh pr create` and `gh pr ready` until Code Reviewer and Reality Checker ran after the last code edit. `ROLE_GATE=off` in the environment Claude Code is started from switches it off for that session; only the owner does that.
+- **Permissions:** [`.claude/settings.json`](.claude/settings.json). Edits to CI, agent configuration and Loop files ask first, in the main checkout and in any ticket worktree (shell-made edits are not covered, so a ticket never changes agent configuration); force pushes, pushes to `main`, `gh pr merge`, releases and reads of `.env` are denied.
+- **CI:** [`.github/workflows/ci.yml`](.github/workflows/ci.yml). Jobs `test` and `go` must be green on the current diff before a pull request is marked ready. Until ticket #2 adds `go.mod`, the Go steps are skipped behind a guard that ticket removes. The agent does not poll: it ends its turn with "Draft pull request #N is waiting for CI" and reads `gh pr checks` once when woken. Reviewers read the diff and evidence from `.claude/state/review/`. An acceptance step that needs a person is listed under "Owner checks" in the pull request.
+- **Pull request:** [`.github/pull_request_template.md`](.github/pull_request_template.md). Tickets use [`.github/ISSUE_TEMPLATE/implementation-ticket.md`](.github/ISSUE_TEMPLATE/implementation-ticket.md).
+- **Labels:** `status:ready`, `status:blocked`, `status:in-progress`, `needs-decision`.
+- **Changelog:** every ticket pull request adds one line under Unreleased in [CHANGELOG.md](CHANGELOG.md).
+- **UI and copy:** [docs/ui-quality.md](docs/ui-quality.md); the `ui-ux-pro-max` and `unslop` skills are in `.claude/skills/`.
+- **Decisions:** [docs/owner-decisions.md](docs/owner-decisions.md). Security reports: [SECURITY.md](SECURITY.md).
+- **Merge and release:** only the owner merges and releases ([docs/RELEASING.md](docs/RELEASING.md)). An agent stops at a ready pull request.
 
 ## Loop
 
