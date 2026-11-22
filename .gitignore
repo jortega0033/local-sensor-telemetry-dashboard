@@ -11,3 +11,7 @@ dist/
 *.sqlite3
 *.db
 .DS_Store
+
+# Review evidence and ticket worktrees (see next-ticket)
+.claude/state/
+.claude/worktrees/
