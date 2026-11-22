@@ -15,7 +15,7 @@ Module path: `github.com/jortega0033/local-sensor-telemetry-dashboard`. The name
 | Aggregation | `internal/query` | Half-open windows and buckets, count, sum, min, max, cross-block merge, scan and range caps | #2 (minimal), #4 |
 | HTTP | `internal/httpapi` | Routes, Host and Origin checks, body cap, error envelope, status codes, static assets | #2, extended by #8 and #4 |
 | Browser assets | `web/` (embedded with `embed`) | HTML, CSS, JavaScript, SVG chart, accessible table | #2, #10 |
-| Synthetic data | `internal/gen` | Deterministic generator behind `gen` and `bench` | #2, #7 |
+| Synthetic data | `internal/gen` | Fixture batch (#2), seeded stream generator used by tests and the benchmark (#4: seed, row count, series and producers, negative values, timestamps on bucket boundaries; second series fixture B), benchmark presets (#7) | #2, #4, #7 |
 | Test oracle | `internal/refcalc` | Independent in-memory row filter and bucket calculator; imports no engine package | #4 |
 | Browser tests | `internal/browsertest` | Headless Chrome runs against a real server | #10 |
 

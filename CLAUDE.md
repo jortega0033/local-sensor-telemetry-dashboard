@@ -50,10 +50,10 @@ Go is not installed on the owner's PC and nothing is installed globally. **Go ch
 | Run the server | `./sensordash serve --data-dir ./data --addr 127.0.0.1:8765` | planned: introduced by ticket #2 (flag names are proposals) |
 | Print the synthetic fixture batch | `./sensordash gen --fixture` | planned: introduced by ticket #2 |
 | Fault-injection tests (child process, controlled crashes) | `go test ./internal/store/... -run Crash` | planned: introduced by ticket #3 |
-| Chrome browser tests (`CHROME_BIN` or `google-chrome` on `PATH`) | `go test ./internal/browsertest/...` | planned: introduced by ticket #10 |
+| Chrome browser tests (binary from `CHROME_BIN`, else `google-chrome` on `PATH`; defined by ticket #10) | `go test ./internal/browsertest/...` | planned: introduced by ticket #10 |
 | Benchmark with fixed seed and presets | `./sensordash bench --preset <name> --seed <n>` | planned: introduced by ticket #7 |
 
-Tickets #8 to #10 are the new tickets of the epic rewrite (validation and request guards, single-writer lease and startup, dashboard). If they were created under other numbers, fix this table and the epic.
+Tickets #8 to #10 are the new tickets of the epic rewrite (validation and request guards, single-writer lease and startup, dashboard). They are created in the order #8, #9, #10, before any pull request is opened in this repository, because issues and pull requests share one number sequence. If they got other numbers, fix every file that names them (`grep -rnE "#(8|9|10)" CLAUDE.md docs .claude/agents .claude/skills/next-ticket`) and the epic.
 
 ## Architecture boundaries
 

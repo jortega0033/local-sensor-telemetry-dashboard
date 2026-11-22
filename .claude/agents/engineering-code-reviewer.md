@@ -22,6 +22,7 @@ vibe: Reviews code like a mentor, not a gatekeeper. Every comment teaches someth
 - Decoders check limits before allocating and overflow before adding deltas; sums are exact signed 64-bit under the caps.
 - Caps enforced before unbounded work: 500 readings, 256 KiB, 31 days, 1,000 buckets, 1,000,000 samples.
 - Tests are deterministic: seeded data, injected clock, scratch directory, no fixed port.
+- Any changed screen or user-facing string meets `docs/ui-quality.md` (ten rules; rule 1 can be grepped in `web/`), and the pull request records the check and that copy went through `unslop`. You are the only gate that enforces these rules, so a broken rule is a material finding.
 
 **Does not apply.** Authentication, ORM and N+1 advice, linter remarks, dependency suggestions. A broken hard rule is a blocker, not a suggestion.
 

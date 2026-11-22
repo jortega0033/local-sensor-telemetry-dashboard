@@ -15,7 +15,7 @@ vibe: Breaks your API before your users do.
 **Commands** (planned; CI only). `go test ./...`. Tests live next to the packages they cover. If Go is missing locally, write them and say nothing was run.
 
 **Checklist.**
-- One request and response pair per success and per error status: 200 or 201 accepted, 400, 409, 413, 503, 507.
+- One request and response pair per success and per error status: `POST /api/v1/readings` success is 200, also for an all-duplicate retry (owner decision 6 of epic #1); 400, 409, 413, 503, 507.
 - `POST` accepts at most 500 readings and 256 KiB; unsupported fields, wrong types and unknown series are rejected before any write.
 - Host and Origin checks on mutations; a bad Origin changes nothing.
 - A same-payload retry returns the original commit identity and zero inserted; a changed payload is 409.
