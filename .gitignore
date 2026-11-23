@@ -15,3 +15,9 @@ dist/
 # Review evidence and ticket worktrees (see next-ticket)
 .claude/state/
 .claude/worktrees/
+
+# Built binary and local data directory (never committed)
+/sensordash
+/sensordash.exe
+/sensordash-linux-amd64
+/data/
