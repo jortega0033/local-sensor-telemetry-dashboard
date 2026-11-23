@@ -15,7 +15,7 @@ concurrency:
 
 jobs:
   test:
-    # Review gate hook self-test. The repository has no application code yet.
+    # Review gate hook self-test.
     name: test (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
     strategy:
@@ -31,10 +31,6 @@ jobs:
         run: python .claude/hooks/role_gate.py --self-test
 
   go:
-    # TEMPORARY GUARD: every Go step below runs only when go.mod exists, so this
-    # workflow is green on the planning-only repository. The first sub-issue of
-    # ticket #2 (walking skeleton) adds go.mod and removes the `hashFiles('go.mod') != ''` guards
-    # (acceptance criterion 1: "the CI workflow no longer skips Go checks").
     # Go is not installed on the owner's PC; this job is where Go is verified.
     name: go (${{ matrix.os }})
     runs-on: ${{ matrix.os }}
@@ -47,34 +43,27 @@ jobs:
       GOPROXY: "off"
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
-      - name: Go checks skipped (no go.mod yet)
-        if: ${{ hashFiles('go.mod') == '' }}
-        shell: bash
-        run: |
-          echo "No go.mod yet; Go checks are skipped until ticket 2 adds it and removes this guard."
       - uses: actions/setup-go@d8cbb8045d7f43706b9177cceb36c1f91a6644d5 # v7.1.0
-        if: ${{ hashFiles('go.mod') != '' }}
         with:
           # Version from go.mod (owner decision 1 of epic #1: go 1.26 by default).
           go-version-file: go.mod
           cache: false
       - name: Go version
-        if: ${{ hashFiles('go.mod') != '' }}
         run: go version
       - name: gofmt
-        if: ${{ !cancelled() && hashFiles('go.mod') != '' }}
+        if: ${{ !cancelled() }}
         shell: bash
         run: |
           out="$(gofmt -l .)"
           if [ -n "$out" ]; then echo "gofmt would change:"; echo "$out"; exit 1; fi
       - name: go vet
-        if: ${{ !cancelled() && hashFiles('go.mod') != '' }}
+        if: ${{ !cancelled() }}
         run: go vet ./...
       - name: go build
-        if: ${{ !cancelled() && hashFiles('go.mod') != '' }}
+        if: ${{ !cancelled() }}
         run: go build ./...
       - name: go test
         # Linux is the supported host (owner decision 3 of epic #1); Windows only
         # proves that the non-Linux lease stub compiles (vet and build above).
-        if: ${{ !cancelled() && hashFiles('go.mod') != '' && runner.os == 'Linux' }}
+        if: ${{ !cancelled() && runner.os == 'Linux' }}
         run: go test ./...

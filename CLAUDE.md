@@ -6,7 +6,7 @@ Working instructions for this repository. Read this file first, then the documen
 
 An offline time-series workbench for one developer investigating synthetic machine telemetry: generate a run, ingest the readings into a local append-file engine, inspect a time window in Chrome as a chart plus an accessible table, restart, and see the same window again. Go standard library only, one executable, `127.0.0.1` only.
 
-**Nothing is implemented yet.** The repository holds the plan (README, PRD, technical specification) and the backlog in epic #1. Every command below is planned and marked with the ticket that introduces it. Do not describe a planned thing as working, and do not claim a passing baseline: there is none.
+**Only the scaffold exists.** The repository holds the plan (README, PRD, technical specification), the backlog in epic #1, and a Go scaffold: `go.mod`, the package layout with one-line responsibilities, an entry point that prints `--help` and `--version`, and import smoke tests. `serve`, `gen` and `bench` exit non-zero with "not implemented yet: see #<ticket>". Commands marked planned below do not work yet. Do not describe a planned thing as working, and do not claim a passing baseline: there is none.
 
 ## Sources of truth
 
@@ -37,18 +37,18 @@ The PRD and the technical specification repeat the same design sections. When th
 - No throughput or latency claim is made until the benchmark ticket records a measurement.
 - A Go version change, a dependency, an external request or a non-loopback listener needs the owner's approval first, not a pull request.
 
-## Commands (all planned)
+## Commands
 
 Go is not installed on the owner's PC and nothing is installed globally. **Go checks run in CI only** (`actions/setup-go`, pinned by commit SHA). Run `go version` first: if it is missing, do not install it, and do not claim you ran any command below.
 
 | Purpose | Command | Status |
 |---|---|---|
-| Build | `go build -o sensordash ./cmd/sensordash` | planned: introduced by ticket #2 |
-| Format check (empty output is good) | `gofmt -l .` | planned: introduced by ticket #2 |
-| Static check | `go vet ./...` | planned: introduced by ticket #2 |
-| Tests | `go test ./...` | planned: introduced by ticket #2 |
-| Run the server | `./sensordash serve --data-dir ./data --addr 127.0.0.1:8765` | planned: introduced by ticket #2 (flag names are proposals) |
-| Print the synthetic fixture batch | `./sensordash gen --fixture` | planned: introduced by ticket #2 |
+| Build | `go build -o sensordash ./cmd/sensordash` | real (scaffold) |
+| Format check (empty output is good) | `gofmt -l .` | real (scaffold) |
+| Static check | `go vet ./...` | real (scaffold) |
+| Tests | `go test ./...` | real (scaffold: import smoke tests and the entry point's help and version) |
+| Run the server | `./sensordash serve --data-dir ./data --addr 127.0.0.1:8765` | planned: #12 (flag names are proposals; today it exits non-zero with "not implemented yet") |
+| Print the synthetic fixture batch | `./sensordash gen --fixture` | planned: #12 (today it exits non-zero with "not implemented yet") |
 | Fault-injection tests (child process, controlled crashes) | `go test ./internal/store/... -run Crash` | planned: introduced by ticket #3 |
 | Chrome browser tests (binary from `CHROME_BIN`, else `google-chrome` on `PATH`; defined by ticket #10) | `go test ./internal/browsertest/...` | planned: introduced by ticket #10 |
 | Benchmark with fixed seed and presets | `./sensordash bench --preset <name> --seed <n>` | planned: introduced by ticket #7 |
@@ -119,7 +119,7 @@ How a ticket reaches the owner. Each piece is described in its own file; this pa
 - **Start:** the owner runs `/next-ticket` ([`.claude/skills/next-ticket/SKILL.md`](.claude/skills/next-ticket/SKILL.md)); it picks one leaf ticket (never a `tracking` parent or a ticket with open sub-issues; the last sub-issue's pull request also closes the parent), creates the branch and worktree, and runs the playbook [`.claude/skills/implement-ticket/SKILL.md`](.claude/skills/implement-ticket/SKILL.md). Nothing is scheduled.
 - **Gate hook:** [`.claude/hooks/role_gate.py`](.claude/hooks/role_gate.py) blocks `gh pr create` and `gh pr ready` until Code Reviewer and Reality Checker ran after the last code edit. `ROLE_GATE=off` in the environment Claude Code is started from switches it off for that session; only the owner does that.
 - **Permissions:** [`.claude/settings.json`](.claude/settings.json). Agent configuration edits ask in the main checkout and in ticket worktrees; CI, `CLAUDE.md`, `AGENTS.md` and Loop-file edits ask only in the main checkout; in a ticket worktree they are limited by the playbook's scope rule and reviewed by the owner at merge (shell-made edits are not covered, so a ticket never changes agent configuration); force pushes, pushes to `main`, `gh pr merge`, releases and reads of `.env` are denied.
-- **CI:** [`.github/workflows/ci.yml`](.github/workflows/ci.yml). Jobs `test` and `go` (and `bench` once ticket #7 adds it) must be green on the current diff before a pull request is marked ready; a failed `bench` job blocks `gh pr ready`, while a `bench` job that ends green with "no benchmark paths changed" does not. Until the first sub-issue of ticket #2 adds `go.mod`, the Go steps are skipped behind a guard that the same pull request removes, so no ticket pull request runs with the Go steps skipped on Linux (on Windows `go test` is skipped by design; build and vet run). The agent does not poll: it ends its turn with "Draft pull request #N is waiting for CI" and reads `gh pr checks` once when woken. Reviewers read the diff and evidence from `.claude/state/review/`. An acceptance step that needs a person is listed under "Owner checks" in the pull request.
+- **CI:** [`.github/workflows/ci.yml`](.github/workflows/ci.yml). Jobs `test` and `go` (and `bench` once ticket #7 adds it) must be green on the current diff before a pull request is marked ready; a failed `bench` job blocks `gh pr ready`, while a `bench` job that ends green with "no benchmark paths changed" does not. The Go steps are unguarded and run on every pull request on Linux (on Windows `go test` is skipped by design; build and vet run). The agent does not poll: it ends its turn with "Draft pull request #N is waiting for CI" and reads `gh pr checks` once when woken. Reviewers read the diff and evidence from `.claude/state/review/`. An acceptance step that needs a person is listed under "Owner checks" in the pull request.
 - **Pull request:** [`.github/pull_request_template.md`](.github/pull_request_template.md). Tickets use [`.github/ISSUE_TEMPLATE/implementation-ticket.md`](.github/ISSUE_TEMPLATE/implementation-ticket.md).
 - **Labels:** `status:ready`, `status:blocked`, `status:in-progress`, `needs-decision`, `tracking` (parent container, never worked; its sub-issues are the work items).
 - **Changelog:** every ticket pull request adds one line under Unreleased in [CHANGELOG.md](CHANGELOG.md).
