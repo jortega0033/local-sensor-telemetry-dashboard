@@ -43,10 +43,10 @@ Go is not installed on the owner's PC and nothing is installed globally. **Go ch
 
 | Purpose | Command | Status |
 |---|---|---|
-| Build | `go build -o sensordash ./cmd/sensordash` | real (scaffold) |
-| Format check (empty output is good) | `gofmt -l .` | real (scaffold) |
-| Static check | `go vet ./...` | real (scaffold) |
-| Tests | `go test ./...` | real (scaffold: import smoke tests and the entry point's help and version) |
+| Build | `go build -o sensordash ./cmd/sensordash` | scaffolded, unverified: real once the first CI run on this scaffold is green (not yet run) |
+| Format check (empty output is good) | `gofmt -l .` | scaffolded, unverified: real once the first CI run on this scaffold is green (not yet run) |
+| Static check | `go vet ./...` | scaffolded, unverified: real once the first CI run on this scaffold is green (not yet run) |
+| Tests | `go test ./...` | scaffolded, unverified: real once the first CI run is green (import smoke tests and the entry point's help and version; not yet run) |
 | Run the server | `./sensordash serve --data-dir ./data --addr 127.0.0.1:8765` | planned: #12 (flag names are proposals; today it exits non-zero with "not implemented yet") |
 | Print the synthetic fixture batch | `./sensordash gen --fixture` | planned: #12 (today it exits non-zero with "not implemented yet") |
 | Fault-injection tests (child process, controlled crashes) | `go test ./internal/store/... -run Crash` | planned: introduced by ticket #3 |

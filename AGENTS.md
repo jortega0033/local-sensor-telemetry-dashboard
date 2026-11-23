@@ -6,7 +6,7 @@ The full repository instructions are in [CLAUDE.md](CLAUDE.md). This file repeat
 
 Only the scaffold is implemented (module, package layout, entry point with `--help` and `--version`, import smoke tests). The repository holds the plan and the backlog (epic #1). Go is not installed on the owner's PC and nothing is installed globally: Go checks run in CI only.
 
-## Test commands (real, scaffold)
+## Test commands (scaffolded; unverified until the first CI run is green, not yet run)
 
 ```
 gofmt -l .
@@ -16,7 +16,7 @@ go test ./...
 
 Go standard library only, no external dependencies, no package downloads. Do not add a module dependency.
 
-## Run (build is real; `serve` is planned: #12)
+## Run (build is scaffolded, unverified until the first CI run is green; `serve` is planned: #12)
 
 ```
 go build -o sensordash ./cmd/sensordash
