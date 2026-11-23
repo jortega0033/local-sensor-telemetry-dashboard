@@ -2,7 +2,7 @@
 
 A dated record of the decisions the owner made for this repository, so the rules do not depend on anyone's memory of a conversation. Changing any entry needs the owner. An agent that finds a decision blocking a ticket stops and says so.
 
-All entries are dated 2026-11-22.
+Entries are dated 2026-11-22 unless the table says otherwise.
 
 | # | Decision | Date | Implemented in |
 |---|---|---|---|
@@ -18,6 +18,7 @@ All entries are dated 2026-11-22.
 | 10 | Open decisions on tickets are settled with the ticket's stated default; where a ticket states none, the conservative option is taken and flagged in the issue. | 2026-11-22 | The list below; the issues themselves |
 | 11 | Go is not installed on the owner's PC and nothing is installed globally. Go is verified in CI only (`actions/setup-go` pinned by commit SHA), like Rust in the owner's other repositories. The Go module has no external dependencies, the supported host is Linux, and CI is the only place where the Go version from `go.mod` is installed. | 2026-11-22 | `.github/workflows/ci.yml` (job `go`, guarded until ticket #2 adds `go.mod`), `CLAUDE.md` "Commands (all planned)", `AGENTS.md` |
 | 12 | The ten UI rules in `docs/ui-quality.md` are binding, and the `ui-ux-pro-max` and `unslop` skills are installed in the repository and used for UI work and for copy. | 2026-11-22 | `docs/ui-quality.md`, `.claude/skills/ui-ux-pro-max/`, `.claude/skills/unslop/`, `.claude/skills/implement-ticket/SKILL.md`, acceptance criteria of #2, #6 and #10 |
+| 13 | Visual system: Pipenzo Flow look tokens (docs/design-tokens.md). SDLC kit version: jortega0033/sdlc-kit v1.0.0. | 2026-11-23 | `web/tokens.css`, `docs/design-tokens.md` |
 
 ## Open ticket decisions settled by default (entry 10)
 
