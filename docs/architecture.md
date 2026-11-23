@@ -1,6 +1,6 @@
 # Implementer map
 
-Status: **planned, not implemented.** No Go file exists. This page maps the boundaries that [docs/TECHNICAL_SPEC.md](TECHNICAL_SPEC.md) already requires onto a package layout so that parallel tickets do not collide. It adds no requirement; the specification wins where they differ. Ticket #2 creates the layout and must correct this page to what it built, marking each row implemented.
+Status: **scaffolded, not implemented.** Every package below exists as a `doc.go` (its responsibility) plus an import smoke test; `cmd/sensordash` prints `--help` and `--version` and its subcommands report "not implemented yet". No product behaviour exists. This page maps the boundaries that [docs/TECHNICAL_SPEC.md](TECHNICAL_SPEC.md) already requires onto a package layout so that parallel tickets do not collide. It adds no requirement; the specification wins where they differ. Ticket #2 creates the layout and must correct this page to what it built, marking each row implemented.
 
 ## Planned package map
 
