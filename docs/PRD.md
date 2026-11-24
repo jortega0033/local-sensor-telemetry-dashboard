@@ -1,5 +1,7 @@
 # Local Sensor Telemetry Dashboard
 
+> This document specifies phase 1 of the program in [#32](https://github.com/jortega0033/local-sensor-telemetry-dashboard/issues/32). Hour figures in it are early estimates for that phase; its open tickets add up to 63 to 97 hours (2026-11-24). Work that it defers is planned in the later phases only where the program names it.
+
 ## Product requirements
 
 A developer investigating synthetic machine telemetry can generate a run, ingest its readings into a local time-series engine, and inspect a time range in Chrome. The chart and its adjacent table show when values changed, how many samples contributed, and which intervals were empty. The developer can restart the service and reopen the same window.

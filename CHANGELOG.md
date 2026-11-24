@@ -6,4 +6,5 @@ All notable changes to this project are recorded here, in the [Keep a Changelog]
 
 ### Added
 
+- Program goal, score and phases 1 to 6 (#32).
 - Delivery tooling: review gate hook, CI workflow, pull request and issue templates, `next-ticket` driver, UI quality rules and the `ui-ux-pro-max` and `unslop` skills.
