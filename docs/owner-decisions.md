@@ -39,3 +39,13 @@ Each is settled with the default below unless the owner changes it in the issue.
 | #7 | Benchmark | Runs on the GitHub-hosted `ubuntu-latest` runner in a `bench` job of `ci.yml` that runs its benchmark steps on pull requests touching the benchmark (a changed-files step using `git diff --name-only` with full history decides, because GitHub has no job-level path filter and `on.pull_request.paths` would also filter the required jobs; with no benchmark path changed the job ends green) and on `workflow_dispatch` for later reruns (a manual workflow cannot run before it is on the default branch, so the numbers in `docs/benchmark.md` come from the pull request's own run on its head commit); presets `small`, `medium`, `large`; no sustained throughput goal is chosen. | settled by default |
 | #2, #10 | Owner checks | Linux is the only supported host. The owner's PC is Windows without Go: owner checks run in WSL or on a Linux host, using the `sensordash-linux-amd64` binary that CI uploads as an artifact (ticket #2), so no Go is needed. | settled by default |
 | none | Licence | Not selected. No ticket depends on it and none adds a LICENSE. | settled by default |
+
+## Program decisions (owner, 2026-11-24)
+
+The owner accepted the goal and each suggestion below. They apply from the phase they name; the rules of `CLAUDE.md` hold for phase 1 as written.
+
+| Decision | Implemented in |
+|---|---|
+| The repository has a program goal above phase 1: a time-series database and monitoring system, in six phases. | Program issue #32 |
+| Device protocols and several nodes are out of scope today. Suggested: generated devices and loopback only. | Program issue #32 |
+| The idea sounds like a dashboard. Suggested: lead with the database engine. | Program issue #32 |
